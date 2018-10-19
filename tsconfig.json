@@ -1,0 +1,13 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+      "module": "none",
+      "outDir": "dist",
+      "moduleResolution": "node",
+      "target": "esnext",
+      "sourceMap": true,
+      "declaration": false,
+      "strict": true,
+      "jsx": "react"
+  }
+}
