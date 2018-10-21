@@ -56,7 +56,7 @@ export default class ParrotIt extends Component<{}, IState> {
       ws.on("message", data => {
         console.log(`Received WebSocket Data: ${data}`)
         const { callEvent }: IWebSocketPackage = JSON.parse(data.toString())
-        this.setState({ inActiveCall: callEvent === ICallEvent.CalledNumber })
+        if (callEvent === ICallEvent.CalledNumber) this.setState({ inActiveCall: true })
       })
       ws.on("close", (code, reason) => {
         console.log(`WebSocket Connection closing: ${code} | ${reason}`)
