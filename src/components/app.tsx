@@ -1,16 +1,6 @@
 import * as React from "react"
 import { Component } from "react"
-import { writeFileSync, readFileSync } from "fs"
-import {
-  Window,
-  App,
-  TextInput,
-  Text,
-  Menu,
-  Box,
-  Button,
-  Grid
-} from "proton-native"
+import { Window, App, TextInput, Text, Box, Button, Grid } from "proton-native"
 import subscribe from "../subscribe"
 import * as WebSocket from "ws"
 import { IWebSocketPackage, ICallEvent } from "../types"
@@ -45,7 +35,9 @@ export default class ParrotIt extends Component<{}, IState> {
       phoneNumber.length < 50
     this.setState({ phoneNumber, phoneNumberValid })
 
-    console.log(`Phone Number entered: ${phoneNumber}, valid: ${phoneNumberValid}`)
+    console.log(
+      `Phone Number entered: ${phoneNumber}, valid: ${phoneNumberValid}`
+    )
     if (phoneNumberValid) {
       // Remove previous WebSocket Connection
       if (this.websocketConnection) {
@@ -56,7 +48,8 @@ export default class ParrotIt extends Component<{}, IState> {
       ws.on("message", data => {
         console.log(`Received WebSocket Data: ${data}`)
         const { callEvent }: IWebSocketPackage = JSON.parse(data.toString())
-        if (callEvent === ICallEvent.CalledNumber) this.setState({ inActiveCall: true })
+        if (callEvent === ICallEvent.CalledNumber)
+          this.setState({ inActiveCall: true })
       })
       ws.on("close", (code, reason) => {
         console.log(`WebSocket Connection closing: ${code} | ${reason}`)
@@ -97,11 +90,13 @@ export default class ParrotIt extends Component<{}, IState> {
             <Box row={0} column={0} align={{ h: false, v: false }}>
               <Text>Phone Number</Text>
               <TextInput
-                onChange={phoneNumberStr => this.setPhoneNumber(phoneNumberStr)}
+                onChange={async phoneNumberStr =>
+                  this.setPhoneNumber(phoneNumberStr)
+                }
               >
                 {phoneNumber}
               </TextInput>
-              <Button onClick={() => this.setPhoneNumberFromClipboard()}>
+              <Button onClick={async () => this.setPhoneNumberFromClipboard()}>
                 Paste
               </Button>
             </Box>
@@ -113,17 +108,17 @@ export default class ParrotIt extends Component<{}, IState> {
               >
                 {text}
               </TextInput>
-              <Button onClick={() => this.setTextFromClipboard()}>
+              <Button onClick={async () => this.setTextFromClipboard()}>
                 Paste
               </Button>
             </Box>
             <Box row={2} column={0} align={{ h: false, v: false }}>
               <Button
                 enabled={phoneNumberValid && inActiveCall}
-                onClick={() => this.sendToChat()}
+                onClick={async () => this.sendToChat()}
               >
                 ParrotIt
-                </Button>
+              </Button>
             </Box>
           </Grid>
         </Window>
